@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
 import theme from "../../styles/theme";
 import { RFValue } from "react-native-responsive-fontsize";
+import { RectButton } from "react-native-gesture-handler";
 
-export const Container = styled.View`
+export const Container = styled(RectButton)`
     widh: 100%;
     height: 126px;
     background-color: ${( theme ).colors.background_secondary};

@@ -1,5 +1,4 @@
 import React from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import * as SplashScreen from 'expo-splash-screen'
 import {
     useFonts,
@@ -12,7 +11,7 @@ import {
     Archivo_600SemiBold
 } from '@expo-google-fonts/archivo'
 
-import { SchedulingComplete } from './src/screens/SchedulingComplete';
+import { Routes } from './src/routes';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/styles/theme';
 
@@ -33,9 +32,7 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                {fontsLoaded && <SchedulingComplete />}
-            </GestureHandlerRootView>
+            {fontsLoaded && <Routes />}
         </ThemeProvider>
     )
 }
