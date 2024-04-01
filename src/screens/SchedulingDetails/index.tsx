@@ -6,6 +6,7 @@ import { Button } from "../../components/Button";
 import { Feather } from '@expo/vector-icons'
 import { useTheme } from "styled-components";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useNavigation } from "@react-navigation/native";
 
 import speedSvg from '../../assets/speed.svg';
 import accelerationSvg from '../../assets/acceleration.svg';
@@ -39,9 +40,6 @@ import {
     RentalPriceTotal,
     Footer
 } from "./styles";
-import { useNavigation } from "@react-navigation/native";
-
-
 
 export function SchedulingDetails() {
     const theme = useTheme()
@@ -51,10 +49,14 @@ export function SchedulingDetails() {
         navigation.navigate('SchedulingComplete')
     }
 
+    function handleBack() {
+        navigation.goBack()
+    }
+
     return (
             <Container>
                 <Header>
-                    <BackButton onPress={() => {}}/>
+                    <BackButton onPress={handleBack}/>
                 </Header>
 
                 <CarImages>

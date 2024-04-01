@@ -1,6 +1,8 @@
 import React from "react";
 import LogoSvg from '../../assets/logo_background_gray.svg'
 import DoneSvg from '../../assets/done.svg'
+import { ConfirmButton } from "../../components/ConfirmButton";
+import { useNavigation } from "@react-navigation/native";
 
 import { useWindowDimensions, StatusBar } from 'react-native'
 
@@ -11,8 +13,7 @@ import {
     Message, 
     Footer
 } from './styles'
-import { ConfirmButton } from "../../components/ConfirmButton";
-import { useNavigation } from "@react-navigation/native";
+
 
 export function SchedulingComplete() {
     const { width } = useWindowDimensions()
