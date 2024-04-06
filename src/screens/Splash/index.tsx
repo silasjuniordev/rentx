@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import { StatusBar } from "react-native";
 
 import BrandSvg from "../../assets/brand.svg";
 import LogoSvg from "../../assets/logo.svg";
 
+import { Container } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
 import Animated, { 
@@ -13,9 +15,6 @@ import Animated, {
     Extrapolation,
     runOnJS
 } from "react-native-reanimated";
-
-import { Container } from "./styles";
-
 
 export function Splash() {
     const navigation = useNavigation()
@@ -69,6 +68,11 @@ export function Splash() {
 
     return (
         <Container>
+            <StatusBar 
+                barStyle="light-content" 
+                backgroundColor="transparent"
+                translucent
+            />
             <Animated.View style={[brandStyle, { position: 'absolute' }]}>
                 <BrandSvg width={80} height={50} />
             </Animated.View>
