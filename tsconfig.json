@@ -3,7 +3,8 @@
   "compilerOptions": {
     "jsx": "react",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
   "include": [
     "**/*.ts",

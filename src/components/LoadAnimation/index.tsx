@@ -11,7 +11,7 @@ export function LoadAnimation() {
         <Container>
             <LottieView 
                 source={loadingCar}
-                style={{ height: 200 }}
+                style={{ height: 200 , flex: 1 }}
                 resizeMode="contain"
                 autoPlay
                 loop
