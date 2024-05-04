@@ -14,7 +14,6 @@ import theme from "../../styles/theme";
 import { useAuth } from "../../hooks/auth";
 
 import { useNavigation } from "@react-navigation/native";
-import { database } from "../../databases";
 
 import { 
     Container,
@@ -43,8 +42,7 @@ export function SignIn() {
             })
     
             await schema.validate({ email, password })
-            Alert.alert('Login realizado com sucesso')
-
+            
             signIn({ email, password })
         } catch (error) {
             if(error instanceof Yup.ValidationError) {
@@ -58,16 +56,6 @@ export function SignIn() {
     function handleNewAccount() {
         navigation.navigate('SignUpFirstStep')
     }
-
-    useEffect(() => {
-        async function loadData() {
-            const userCollection = database.get('users')
-            const users = await userCollection.query().fetch()
-            console.log(users)
-        }
-
-        loadData()
-    },[])
 
     return (
         <KeyboardAvoidingView behavior="position" enabled>
