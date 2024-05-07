@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 import theme from "../../styles/theme";
 import { getBottomSpace, getStatusBarHeight } from "react-native-iphone-x-helper";
 import { RFValue } from "react-native-responsive-fontsize";
+import { withXcodeProject } from "expo/config-plugins";
 
 export const Container = styled.View`
     flex: 1;
@@ -81,4 +82,11 @@ export const Footer = styled.View`
     width: 100%;
     background-color: ${( theme ).colors.background_primary};
     padding: 24px 24px ${getBottomSpace() + 24}px;
+`;
+
+export const OfflineInfo = styled.Text`
+    font-family: ${( theme ).fonts.primary_400};
+    color: ${( theme ).colors.main};
+    font-size: ${RFValue(10)}px;
+    text-align: center;
 `;

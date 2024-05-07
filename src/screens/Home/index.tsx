@@ -1,13 +1,17 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Alert, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNetInfo }  from "@react-native-community/netinfo"
+import { synchronize } from "@nozbe/watermelondb/sync";
 
+import { database } from "../../databases";
+import { api } from "../../services/api";
+
+import { Car as ModelCar } from "../../databases/model/Car";
 import { Car } from "../../components/Car";
 import { useNavigation } from "@react-navigation/native";
-import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
 import { LoadAnimation } from "../../components/LoadAnimation";
 
@@ -20,7 +24,7 @@ import {
 } from "./styles";
 
 export function Home() {
-    const [ cars, setCars ] = useState<CarDTO[]>([])
+    const [ cars, setCars ] = useState<ModelCar[]>([])
     const [ loading, setLoading ] = useState(true)
     
     const netInfo = useNetInfo()
@@ -30,14 +34,32 @@ export function Home() {
         navigation.navigate('CarDetails', { car })
     }
 
+    async function offlineSynchronize() {
+        await synchronize({
+            database,
+            pullChanges: async ({ lastPulledAt }) => {
+                const response = await api
+                    .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+                
+                const { changes, lastestVersion } = response.data
+                return { changes, timestamp: lastestVersion }
+            },
+            pushChanges: async ({ changes }) => {
+                const user = changes.users
+                await api.post('/users/sync', user)
+            }
+        })
+    }
+
     useEffect(() => {
         let isMonted = true
 
         async function fetchCars() {
             try {
-                const response = await api.get('/cars')
+                const carCollection = database.get<ModelCar>('cars')
+                const cars = await carCollection.query().fetch()
                 if(isMonted) {
-                    setCars(response.data)
+                    setCars(cars)
                 }
             } catch (error) {
                 console.log(error)
@@ -55,11 +77,9 @@ export function Home() {
     }, [])
 
     useEffect(() => {
-       if (netInfo.isConnected) {
-           Alert.alert('Conectado a internet!')
-       } else {
-           Alert.alert('Desconectado da internet!')
-       }
+        if (netInfo.isConnected === true) {
+            offlineSynchronize()
+        }
     }, [netInfo.isConnected])
 
     return (
@@ -88,7 +108,7 @@ export function Home() {
             <CarList 
                 data={cars}
                 keyExtractor={(item: { id: any; }) => item.id}
-                renderItem={({ item }: { item: CarDTO }) => 
+                renderItem={({ item }: { item: ModelCar }) => 
                     <Car data={item} onPress={() => handleCarDetails(item)} />
                 }
             />

@@ -17,6 +17,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useAuth } from "../../hooks/auth";
 import { Button } from "../../components/Button";
 import * as Yup from 'yup';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { 
     Container,
@@ -45,12 +46,18 @@ export function Profile() {
     const theme = useTheme()
     const navigation = useNavigation()
 
+    const netInfo = useNetInfo()
+
     function handleBack() {
         navigation.goBack()
     }
 
     function handleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
-        setOption(optionSelected)
+        if (netInfo.isConnected === false && optionSelected === 'passwordEdit') {
+            Alert.alert('Você esta Offline', 'Conecte-se a Internet para alterar a senha')
+        } else {
+            setOption(optionSelected)
+        }
     }
 
     async function handleAvatarSelect() {
